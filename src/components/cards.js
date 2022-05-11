@@ -22,7 +22,7 @@ import {cargarCiudades} from '../redux/actions/index'
 //-------------------------------------------inicio-----------------------------------------------
      useEffect(()=>{
         async function buscar(){
-            let ciudadesDb = await axios.get('https://github.com/teixeira26/weather-app/');
+            let ciudadesDb = await axios.get('https://weather-app266.herokuapp.com/');
             let results = ciudadesDb.data.find(x=>x.email === user.email);
             results = results.Ciudades.map(x=>x.nombre);
             console.log(results)
@@ -49,7 +49,7 @@ import {cargarCiudades} from '../redux/actions/index'
         buscar();
     
         async function cargarFormData(){
-            let info = await axios.get('https://github.com/teixeira26/weather-app/');
+            let info = await axios.get('https://weather-app266.herokuapp.com/');
             let userdata = info.data.find(el=>el.email === user.email);
             console.log(userdata.Datauser.telefono)
             setDataForm({
@@ -68,7 +68,7 @@ import {cargarCiudades} from '../redux/actions/index'
         try {
         let a = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=eb4dae42849d5d33c5a495614e05e6bf&units=metric`);
          console.log(user)
-         await axios.post('https://github.com/teixeira26/weather-app/agregar',{nombre: a.data.name, email:user.email})
+         await axios.post('https://weather-app266.herokuapp.com/agregar',{nombre: a.data.name, email:user.email})
         let newCard = {
             name:a.data.name,
             minima:a.data.main.temp_max,
@@ -98,7 +98,7 @@ import {cargarCiudades} from '../redux/actions/index'
         setCiudad(evento.target.value);
     }
     const eliminar = async(elemento)=>{
-        await axios.delete('https://github.com/teixeira26/weather-app/sacar',{
+        await axios.delete('https://weather-app266.herokuapp.com/sacar',{
             data:{
                 ciudade: elemento,
                 email:user.email
@@ -124,7 +124,7 @@ import {cargarCiudades} from '../redux/actions/index'
     const enviarFormData = async(e)=>{
         e.preventDefault();
         //console.log({...dataForm, email:user.email})
-        await axios.post('https://github.com/teixeira26/weather-app/addDataUser',{...dataForm, email:user.email});
+        await axios.post('https://weather-app266.herokuapp.com/addDataUser',{...dataForm, email:user.email});
         alert('alteración realizada con suceso')
         setDidabled(true)
     }

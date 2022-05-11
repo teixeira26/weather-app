@@ -13,7 +13,7 @@ function Navbar(){
     useEffect(()=>{
         if(isAuthenticated){
         //console.log(user)
-            axios.post('https://github.com/teixeira26/weather-app/agregarUser',{
+            axios.post('https://weather-app266.herokuapp.com/agregarUser',{
             username:user.name,
             email:user.email
         })

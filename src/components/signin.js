@@ -26,7 +26,7 @@ const Signin = ()=>{
     const sendToDb =async (e)=>{
         e.preventDefault();
         console.log(formulario);
-        await axios.post('https://github.com/teixeira26/weather-app/agregarUser',formulario)
+        await axios.post('https://weather-app266.herokuapp.com/agregarUser',formulario)
         console.log('lo envió a la db')
     }
     return( 
