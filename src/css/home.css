@@ -1,0 +1,28 @@
+header{
+    box-sizing: border-box;
+    width: 100vw;
+}
+.div1{
+    height: 60vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(3, 3, 3);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'luna';
+    background-image: url('https://fotos.perfil.com/2020/12/27/trim/1280/720/2712clima-1105911.jpg');
+}
+.div2{
+    height:100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+.div2 p{
+    margin:50px;
+}
