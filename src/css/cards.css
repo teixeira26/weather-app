@@ -4,3 +4,13 @@
     align-content: center;
     flex-wrap: wrap;
 }
+
+
+.button{
+    width: 120px;
+}
+
+.margin{
+
+    margin-top: 100px;
+}

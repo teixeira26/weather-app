@@ -5,10 +5,13 @@ import Detalle from "./detalle";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import {cargarCiudades} from '../redux/actions/index'
+import { NavLink } from "react-router-dom";
+import "../css/cards.css"
+import Swal from 'sweetalert2';
 
 
     function Cards(){
-    const {user} = useAuth0();
+    const {user, isAuthenticated} = useAuth0();
     const dispatch = useDispatch();
     const [cargado, setCargado] = useState(false)
     const [ciudad, setCiudad] = useState('');
@@ -43,7 +46,8 @@ import {cargarCiudades} from '../redux/actions/index'
             newCards.push(newCard)
         }
         console.log(newCards)
-        setNewCard(newCards)
+        setNewCard(newCards);
+        setCargado(true);
 
     }
         buscar();
@@ -79,20 +83,39 @@ import {cargarCiudades} from '../redux/actions/index'
         }
         if(!cards.find(x=>x.name === newCard.name)){
             setNewCard([...cards, newCard])
-            setCargado(false);
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Ciudad agregada con suceso',
+                showConfirmButton: false,
+                timer: 1500
+              })
         }
-        else{alert('ya agregaste una card con este nombre')}
+        else{Swal.fire({
+            position: 'top-end',
+            icon: 'warning',
+            title: 'Ya agregaste una ciudad con este nombre',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
 
         console.log(cards);
         } catch (error) {
-        alert(error)
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Algo ocurrió mal',
+                showConfirmButton: false,
+                timer: 1500
+              })
 
         }
         
     }
-    useEffect(()=>{
-        if(cards.length>0)alert('card agregado con suceso')
-    },[cards])
+    // useEffect(()=>{
+    //     if(cards.length>0 && cargado)alert('card agregado con suceso')
+    // },[cards])
 
     const cambio = (evento)=>{
         setCiudad(evento.target.value);
@@ -108,44 +131,57 @@ import {cargarCiudades} from '../redux/actions/index'
         console.log(elemento)
         console.log(cardss);
         setNewCard(cardss);
-        alert('card eliminado con suceso');
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Ciudad eliminada con suceso',
+            showConfirmButton: false,
+            timer: 1500
+          });
     }
-    const habilitar = (e)=>{
-        e.preventDefault()
-        if(disabled===true)setDidabled(false);
-        else {setDidabled(true)};
-    }
-    const cambiarformData = (e)=>{
-        setDataForm({
-            ...dataForm,
-            [e.target.name]:e.target.value
-        })
-    }
-    const enviarFormData = async(e)=>{
-        e.preventDefault();
-        //console.log({...dataForm, email:user.email})
-        await axios.post('https://weather-app266.herokuapp.com/addDataUser',{...dataForm, email:user.email});
-        alert('alteración realizada con suceso')
-        setDidabled(true)
-    }
+   
+   
+    
     return(
-        <div className="container">
-            {console.log(cards)}
+        <div className="container margin">
+            {/* {console.log(cards)}
             <h1>Hola</h1>
             <form onSubmit={enviarFormData}>
                 <input type="text" name="telefono" className="form-control " placeholder="telefono"disabled={disabled} onChange={cambiarformData} value={dataForm.telefono}/>
                 <input type="time" name="hora_de_alarme" className="form-control " placeholder="hora de alerta" disabled={disabled} onChange={cambiarformData} value={dataForm.hora_de_alarme}/>
                 <input type="submit" value="enviar" disabled={disabled}></input>
             </form>
-            <input type="submit" value="cambiar" onClick={habilitar}></input>
+            <input type="submit" value="cambiar" onClick={habilitar}></input> */}
+            {isAuthenticated&&<div>
+                <h4 className="display-6">
+                    Bienvenido {user.given_name}
+                </h4>
+                <div className='p-5'>
+                    <p className="">
+                    Tu telefono registrado es: {dataForm.telefono}
+                    </p>
+                    <p className="">
+                    Tu hora de alarma registrada es: {dataForm.hora_de_alarme}
+                    </p>
+                    <p className="">
+                    Si querés cambiar los datos registrados presioná el butón abajo
+                    </p>
+                </div>
+            </div>}
+            <NavLink to="/form"><input type="submit" className="btn btn-primary button" value="cambiar"></input></NavLink>
+            <div className='p-5'>
+                    <p className="">
+                    Abajo al inserir el nombre de una ciudad en el input y al presionar enviar agregarás una ciudad a tu colección, todos los días a la hora registrada te llegará un mensaje con informaciones sobre las ciudades que están en tu colección en el WhatsApp del número registrado. Si deseas dejar de recibir notificaciones basta excluir a todas las ciudades
+                    </p>
+            </div>
             <form onSubmit={consulta}>
-                <input type='text' className="form-control me-2" style={{width: '30%', display:'inline'}} placeholder='digitá una ciudad' onChange={cambio} ></input>
-                <input type='submit'  className="btn btn-primary"></input>
+                <input type='text' className="form-control me-2" style={{width: '30%', display:'inline'}} placeholder='Escribí el nombre de una ciudad' onChange={cambio} ></input>
+                <input type='submit'  className="btn btn-primary button"></input>
             </form>
             <div className="card-container">
             {cards.length>0?cards.map((x,y)=>{
                 return (<Detalle props ={cards[y]} eliminar={eliminar} key={y}></Detalle>)
-            }):<h1>Todavia no agregaste ninguna ciudad</h1>}
+            }):<h2 className="display-4">Todavia no agregaste ninguna ciudad</h2>}
             </div>
         </div>
     )
